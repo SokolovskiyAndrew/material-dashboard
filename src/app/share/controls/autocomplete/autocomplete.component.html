@@ -1,0 +1,25 @@
+<mat-form-field [style.width.px]=220>
+  <mat-label>{{label}}</mat-label>
+  <mat-select
+    [formControl]="autocompleteFormControl"
+    [required]="isRequired">
+    <mat-select-trigger fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+      <div *ngIf="isUseIcons">
+        <mat-icon>{{currentDeviceType.typeIcon}}</mat-icon>
+      </div>
+      <div>
+        <span>{{currentDeviceType.typeDescription}}</span>
+      </div>
+    </mat-select-trigger>
+    <mat-option
+      *ngFor="let deviceType of deviceTypes"
+      [value]="deviceType?.typeId">
+      <mat-icon *ngIf="isUseIcons">
+        {{deviceType?.typeIcon}}
+      </mat-icon>
+      <span>
+        {{deviceType?.typeDescription}}
+      </span>
+    </mat-option>
+  </mat-select>
+</mat-form-field>

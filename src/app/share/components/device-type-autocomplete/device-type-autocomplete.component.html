@@ -1,0 +1,15 @@
+<mat-form-field [style.width.px]=formControlWith>
+  <mat-label>{{formControlLabel}}<span *ngIf="isRequired">*</span></mat-label>
+  <input type="text"
+         placeholder="Pick device type"
+         matInput
+         [formControl]="formControl"
+         [matAutocomplete]="auto"
+  >
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option  *ngFor="let deviceType of deviceTypes" [value]="deviceType">
+      <mat-icon>{{deviceType.typeIcon}}</mat-icon>{{deviceType.typeDescription}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+

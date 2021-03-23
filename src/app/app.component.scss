@@ -1,0 +1,16 @@
+@import '../styles/colors';
+
+.mat-sidenav-container {
+  height: 100%;
+
+  .mat-sidenav {
+    width: 70px;
+    background-color: $primary-blue;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.7);
+  }
+
+  .mat-sidenav-content {
+    padding: 0 20px;
+  }
+}
+

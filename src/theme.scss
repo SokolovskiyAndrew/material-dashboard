@@ -1,0 +1,14 @@
+@import '~@angular/material/theming';
+@import "src/styles/custom-palettes";
+@include mat-core();
+
+/* ======== Angular material custom themes ======== */
+
+
+$dashboard-primary: mat-palette($primary-blue, Main, Light, Dark);
+$dashboard-accent: mat-palette($primary-orange, Main, Light, Dark);
+$dashboard-warn: mat-palette($mat-red);
+
+$dashboard-theme: mat-light-theme($dashboard-primary, $dashboard-accent, $dashboard-warn);
+
+@include angular-material-theme($dashboard-theme);

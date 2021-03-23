@@ -1,0 +1,12 @@
+
+  <ul class="nav__menu" fxLayout="column"fxLayoutGap="20px">
+    <li *ngFor="let menuItem of menuItems"
+        routerLinkActive="activeMenuItem"
+        class="nav__menu__item"
+    >
+      <a [routerLink]="menuItem.link" class="nav__menu__item__link">
+        <mat-icon class="nav__menu__item__icon">{{menuItem.icon}}</mat-icon>
+      </a>
+    </li>
+  </ul>
+

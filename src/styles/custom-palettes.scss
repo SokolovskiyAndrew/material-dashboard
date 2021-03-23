@@ -1,0 +1,69 @@
+//$primary-blue: (
+//  100: #86C8FF,
+//  500: #1775bb,
+//  700: #4F71C0,
+//  A100: #86C8FF,
+//  A200: #67ABF6,
+//  A400: #4590D8,
+//  A700: #004A8A,
+//  contrast: (
+//    100: #86C8FF,
+//    500: #1775bb,
+//    700: #4F71C0,
+//    A100: #86C8FF,
+//    A200: #67ABF6,
+//    A400: #4590D8,
+//    A700: #004A8A,
+//  )
+//);
+
+$primary-blue: (
+  Main: #1775bb,
+  Light: #5da3ee,
+  Dark: #004a8a,
+  contrast: (
+    Main: #f5f5f5,
+    Light: #000,
+    Dark: #fff
+  )
+);
+
+$primary-orange: (
+  Main: #f09f4e,
+  Light: #ffd07d,
+  Dark: #b9701f,
+  contrast: (
+    Main: #fff,
+    Light: #fff,
+    Dark: #fff
+  )
+);
+
+//$primary-orange: (
+//  100: #DEA01E,
+//  500: #f09f4e,
+//  700: #CE8232,
+//  800: #d63a04,
+//  900: #b83204,
+//  A400: #fc8259,
+//  A700: #f44205,
+//  contrast: (
+//    500: white,
+//    600: white,
+//    700: white,
+//    800: white,
+//    900: white,
+//    A700: white,
+//  )
+//);
+
+$primary-green: (
+  100: #76FAC7,
+  500: #34C191,
+  700: #008A5F,
+  contrast: (
+    100: #76FAC7,
+    500: #34C191,
+    700: #008A5F
+  )
+)

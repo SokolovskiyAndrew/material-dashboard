@@ -1,0 +1,256 @@
+<h2 mat-dialog-title>New Order</h2>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="form" autocomplete="off" novalidate>
+<!--    <mat-vertical-stepper [linear]="true"  #stepper>-->
+<!--      <mat-step>-->
+<!--        <ng-template matStepLabel>Customer Info<mat-icon>account_circle</mat-icon></ng-template>-->
+<!--        <div fxLayoutAlign="space-between center">-->
+<!--          <mat-form-field [style.width.px]=320>-->
+<!--            <mat-label>Customer Name:</mat-label>-->
+<!--            <input-->
+<!--              matInput-->
+<!--              required-->
+<!--              [formControlName]="formControls.customerName"-->
+<!--              [errorStateMatcher]="errorStateMatcher">-->
+<!--            <mat-error *ngIf="-->
+<!--                  form.controls[formControls.customerName].hasError('required')">Please, enter customer name</mat-error>-->
+<!--          </mat-form-field>-->
+<!--          <mat-form-field>-->
+<!--            <mat-label>Phone Number:</mat-label>-->
+<!--            <span matPrefix>+380 &nbsp;</span>-->
+<!--            <input-->
+<!--              type="tel"-->
+<!--              matInput-->
+<!--              required-->
+<!--              mask="(000) 000-0000"-->
+<!--              placeholder="555-555-1234"-->
+<!--              [formControlName]="formControls.customerPhoneNumber"-->
+<!--              [errorStateMatcher]="errorStateMatcher"-->
+<!--            >-->
+<!--          </mat-form-field>-->
+<!--          <mat-checkbox value="after" [formControlName]="formControls.isCustomerHasViber">Has Viber</mat-checkbox>-->
+<!--        </div>-->
+<!--      </mat-step>-->
+<!--      <mat-step>-->
+<!--        <ng-template matStepLabel>Service Dates</ng-template>-->
+<!--                <div fxLayoutAlign="space-between center">-->
+<!--                  <mat-form-field color="primary">-->
+<!--                    <mat-label>Start Service Date:</mat-label>-->
+<!--                    <input-->
+<!--                      matInput-->
+<!--                      required-->
+<!--                      [matDatepicker]="startServiceDatePicker"-->
+<!--                      [matDatepickerFilter]="myFilter"-->
+<!--                      [formControlName]="formControls.startDate"-->
+<!--                      [errorStateMatcher]="errorStateMatcher"-->
+<!--                    >-->
+<!--                    <mat-datepicker-toggle matSuffix [for]="startServiceDatePicker"></mat-datepicker-toggle>-->
+<!--                    <mat-datepicker #startServiceDatePicker color="primary"></mat-datepicker>-->
+<!--                  </mat-form-field>-->
+<!--                  <mat-form-field color="primary" [style.width.px]=320>-->
+<!--                    <mat-label>End Service Date:</mat-label>-->
+<!--                    <input-->
+<!--                      matInput-->
+<!--                      [matDatepicker]="endServiceDatePicker"-->
+<!--                      [matDatepickerFilter]="myFilter"-->
+<!--                      [formControlName]="formControls.endDate"-->
+<!--                    >-->
+<!--                    <mat-datepicker-toggle matSuffix [for]="endServiceDatePicker"></mat-datepicker-toggle>-->
+<!--                    <mat-datepicker #endServiceDatePicker color="primary"></mat-datepicker>-->
+<!--                  </mat-form-field>-->
+<!--                </div>-->
+<!--      </mat-step>-->
+<!--      <mat-step>-->
+<!--        <ng-template matStepLabel>Device Info</ng-template>-->
+<!--                <div fxLayoutAlign="end">-->
+<!--                  <button mat-icon-button (click)="addDeviceInfoFormControl()">-->
+<!--                    <mat-icon>add_box</mat-icon>-->
+<!--                  </button>-->
+<!--                </div>-->
+
+<!--                <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="12px">-->
+<!--                  <ng-container [formArrayName]="formControls.deviceInfo">-->
+<!--                    <div *ngFor="let _ of deviceInfoFormArray.controls; index as deviceInfoIndex">-->
+<!--                      <ng-container>-->
+
+<!--                        <app-device-info-->
+<!--                          [formControlName]="deviceInfoIndex"-->
+<!--                          [deviceTypes]="deviceTypes"-->
+<!--                          [isRemoveControlButtonDisabled]="deviceInfoIndex === 0"-->
+<!--                          (removeControl)="removeDeviceInfoControl(deviceInfoIndex)"-->
+<!--                        ></app-device-info>-->
+<!--                      </ng-container>-->
+<!--                    </div>-->
+<!--                  </ng-container>-->
+
+<!--                </div>-->
+<!--      </mat-step>-->
+<!--    </mat-vertical-stepper>-->
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="expansionPanelStep === 0" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Customer Info
+          </mat-panel-title>
+          <mat-panel-description fxLayoutAlign="end">
+            <mat-icon>account_circle</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div fxLayoutAlign="space-between center">
+          <mat-form-field [style.width.px]=320>
+            <mat-label>Customer Name:</mat-label>
+            <input
+              matInput
+              required
+              [formControlName]="formControls.customerName"
+              [errorStateMatcher]="errorStateMatcher">
+            <mat-error
+              *ngIf="form.controls[formControls.customerName].hasError('required')">
+              Please, enter customer name
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Phone Number:</mat-label>
+            <span matPrefix>+380&nbsp;</span>
+            <input
+              type="tel"
+              matInput
+              required
+              mask="(00) 000-0000" placeholder="Ex. (00) 000-0000"
+              [formControlName]="formControls.customerPhoneNumber"
+              [errorStateMatcher]="errorStateMatcher"
+            >
+            <mat-error
+              *ngIf="form.controls[formControls.customerPhoneNumber].hasError('required')">
+              Please, enter customer phone number
+            </mat-error>
+            <mat-error
+              *ngIf="form.controls[formControls.customerPhoneNumber].hasError('mask')">
+              Please, enter phone number by template
+            </mat-error>
+          </mat-form-field>
+          <mat-checkbox value="after" [formControlName]="formControls.isCustomerHasViber">Has Viber</mat-checkbox>
+        </div>
+
+        <mat-action-row>
+          <button mat-button color="primary" (click)="nextExpansionPanelStep()">Next</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="expansionPanelStep === 1" (opened)="setExpansionPanelStep(1)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Service Date
+          </mat-panel-title>
+          <mat-panel-description fxLayoutAlign="end">
+            <mat-icon>date_range</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div fxLayoutAlign="space-between center">
+          <app-datepicker
+            [formControlName]="formControls.startDate"
+            [inputId]="formControls.startDate"
+            controlLabel="Start Service Date"
+            [isRequired]="true"
+            [isSundayDisabled]="true"
+            [isSetDefaultValue]="true"
+          ></app-datepicker>
+          <app-datepicker
+            [formControlName]="formControls.endDate"
+            [inputId]="formControls.endDate"
+            controlLabel="End Service Date"
+            [isSundayDisabled]="true"
+            [isSetDefaultValue]="false"
+          ></app-datepicker>
+        </div>
+
+        <mat-action-row>
+          <button mat-button color="primary" (click)="prevExpansionPanelStep()"><mat-icon>arrow_left</mat-icon></button>
+          <button mat-button color="primary" (click)="nextExpansionPanelStep()"><mat-icon>arrow_right</mat-icon></button>
+        </mat-action-row>
+      </mat-expansion-panel>
+      <mat-expansion-panel [expanded]="expansionPanelStep === 2" (opened)="setExpansionPanelStep(2)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <span class="mat-expansion-panel-title-badge">
+              Device Info
+            </span>
+          </mat-panel-title>
+          <mat-panel-description fxLayoutAlign="end">
+            <mat-icon>devices</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div fxLayoutAlign="end">
+          <button mat-icon-button (click)="addDeviceInfoFormControl()">
+            <mat-icon>add_box</mat-icon>
+          </button>
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="12px">
+<!--          <ng-container [formArrayName]="formControls.deviceInfo" *ngFor="let _ of deviceInfoFormArray.controls; index as deviceInfoIndex">-->
+<!--            <div >-->
+<!--            </div>-->
+<!--          </ng-container>-->
+          <ng-container [formArrayName]="formControls.deviceInfo" *ngFor="let _ of deviceInfoFormArray.controls; index as deviceInfoIndex">
+            <app-device-info
+              [formControlName]="deviceInfoIndex"
+              [deviceTypes]="deviceTypes"
+              [isRemoveControlButtonDisabled]="deviceInfoIndex === 0"
+              (removeControl)="removeDeviceInfoControl(deviceInfoIndex)"
+            ></app-device-info>
+          </ng-container>
+        </div>
+
+        <mat-action-row>
+          <button mat-button color="warn" (click)="prevExpansionPanelStep()">Previous</button>
+          <button mat-button color="primary" (click)="nextExpansionPanelStep()">Next</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="expansionPanelStep === 3" (opened)="setExpansionPanelStep(3)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Order Info
+          </mat-panel-title>
+          <mat-panel-description fxLayoutAlign="end">
+            <mat-icon>info</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div fxLayoutAlign="space-between center">
+          <app-autocomplete
+            [deviceTypes]="orderStatusItems"
+            label="Order Status"
+            [formControlName]="formControls.orderState"
+            [isUseIcons]="true"
+            [isRequired]="true"
+          ></app-autocomplete>
+          <app-autocomplete
+            [deviceTypes]="workersList"
+            label="Assigned Worker"
+            [formControlName]="formControls.assignedWorker"
+          ></app-autocomplete>
+          <mat-slide-toggle
+            class="example-margin"
+            color="primary"
+            [formControlName]="formControls.isOrderUrgent"
+          >
+            Urgent
+          </mat-slide-toggle>
+        </div>
+
+        <mat-action-row>
+          <button mat-button color="warn" (click)="prevExpansionPanelStep()">Previous</button>
+          <button mat-button color="primary" (click)="nextExpansionPanelStep()">Next</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button mat-raised-button color="primary" cdkFocusInitial (click)="saveOrder()">Save</button>
+</mat-dialog-actions>

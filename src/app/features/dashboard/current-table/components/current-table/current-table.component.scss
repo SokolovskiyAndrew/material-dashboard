@@ -1,0 +1,22 @@
+@import '../../../../../../styles/colors';
+
+table {
+  width: 100%;
+}
+
+button {
+  margin: 16px 8px;
+}
+
+::ng-deep {
+  .successful-snackbar {
+    background-color: lighten($primary-blue, 20);
+    opacity: 0.7;
+    color: $primary-white;
+
+    button {
+      color: $primary-white;
+      background-color: darken($primary-blue, 10);
+    }
+  }
+}

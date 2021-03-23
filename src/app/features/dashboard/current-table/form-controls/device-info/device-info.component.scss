@@ -1,0 +1,16 @@
+.mat-card {
+  position: relative;
+  width: 720px;
+
+  .remove__control__button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    min-width: 36px;
+    padding: 0;
+  }
+
+  .form__control__textarea {
+    width: 100%;
+  }
+}

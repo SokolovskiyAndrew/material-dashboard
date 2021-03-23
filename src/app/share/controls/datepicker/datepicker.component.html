@@ -1,0 +1,14 @@
+<mat-form-field color="primary">
+  <mat-label>{{controlLabel}}</mat-label>
+  <input
+    matInput
+    readonly
+    [required]="isRequired"
+    [matDatepicker]="startServiceDatePicker"
+    [matDatepickerFilter]="isSundayDisabled ? myFilter : null"
+    [formControl]="formControl"
+    [id]="inputId"
+  >
+  <mat-datepicker-toggle matSuffix [for]="startServiceDatePicker"></mat-datepicker-toggle>
+  <mat-datepicker #startServiceDatePicker color="primary"></mat-datepicker>
+</mat-form-field>
