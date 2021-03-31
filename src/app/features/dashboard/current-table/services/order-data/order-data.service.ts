@@ -20,57 +20,96 @@ export class OrderDataService {
   ordersData: OrderInterface[] = [
     {
       id: 156,
-      status: 'pause_circle_outline',
-      receivedDate: '01/02/2020',
+      status: 0,
+      receivedDate: 'Thu Jun 22 2018 00:00:00 GMT+0300',
       deliveryDate: '',
-      customer: {
+      customerInfo: {
         customerName: 'John Snow',
         phoneNumber: '0952456454',
         isViberPresent: true
       },
-      assignedWorker: {
-        workerName: 'Ivan',
-        workerPhoto: ''
+      assignedWorker: 1,
+      deviceInfo: {
+        deviceType: 0,
+        deviceBrandId: 2,
+        deviceModel: 'Aspire One',
+        deviceDefectDescription: 'Noisy fan',
+        deviceStateDescription: 'Scratches on the top surface',
+        isHasPassword: false,
+        password: null
       },
-      laptopModel: 'HP 2000',
-      laptopDefect: 'Port defect',
-      servicePrice: 200
+      servicePrice: 200,
+      isUrgent: false
     },
     {
-      id: 24,
-      status: 'loop',
-      receivedDate: '03/01/2020',
+      id: 32,
+      status: 1,
+      receivedDate: 'Thu Aug 10 2017 00:00:00 GMT+0300',
       deliveryDate: '',
-      customer: {
-        customerName: 'Michael Scott',
-        phoneNumber: '0632456454',
+      customerInfo: {
+        customerName: 'Hughes Grant',
+        phoneNumber: '0235234246',
         isViberPresent: false
       },
-      assignedWorker: {
-        workerName: 'Maks',
-        workerPhoto: ''
+      assignedWorker: 0,
+      deviceInfo: {
+        deviceType: 1,
+        deviceBrandId: 4,
+        deviceModel: 'Note 10',
+        deviceDefectDescription: 'Broken touchscreen',
+        deviceStateDescription: 'Without back layer',
+        isHasPassword: false,
+        password: null
       },
-      laptopModel: 'Asus 1001',
-      laptopDefect: 'Display Replacement',
-      servicePrice: 800
+      servicePrice: 1400,
+      isUrgent: true
     },
     {
-      id: 453,
-      status: 'check_circle_outline',
-      receivedDate: '28/01/2020',
-      deliveryDate: '30/01/2020',
-      customer: {
-        customerName: 'Dwight Schrute',
-        phoneNumber: '0672456454',
+      id: 31,
+      status: 3,
+      receivedDate: 'Thu Feb 18 2020 00:00:00 GMT+0300',
+      deliveryDate: 'Thu Feb 27 2020 00:00:00 GMT+0300',
+      customerInfo: {
+        customerName: 'Kira Mira',
+        phoneNumber: '0443234567',
         isViberPresent: true
       },
-      assignedWorker: {
-        workerName: 'Serhiy',
-        workerPhoto: ''
+      assignedWorker: 0,
+      deviceInfo: {
+        deviceType: 0,
+        deviceBrandId: 5,
+        deviceModel: 'T400',
+        deviceDefectDescription: 'Water damage',
+        deviceStateDescription: 'A few keys missing on keyboard',
+        isHasPassword: true,
+        password: ['stopuntil']
       },
-      laptopModel: 'Samsung NP300',
-      laptopDefect: 'External video card doesnt work properly',
-      servicePrice: 1500
+      servicePrice: 1800,
+      isUrgent: true
+    },
+    {
+      id: 3,
+      status: 2,
+      receivedDate: 'Thu Mar 11 2020 00:00:00 GMT+0300',
+      deliveryDate: '',
+      customerInfo: {
+        customerName: 'Jared Leto',
+        phoneNumber: '0504329271',
+        isViberPresent: true
+      },
+      assignedWorker: 2,
+      deviceInfo: {
+        deviceType: 3,
+        deviceBrandId: 1,
+        deviceModel: 'P238',
+        deviceDefectDescription:
+          'Instead of trying to "fix it in post" why don\'t you truncate the description before the table needs to try and fit it into its columns? I did it like this:',
+        deviceStateDescription: 'With power block',
+        isHasPassword: false,
+        password: null
+      },
+      servicePrice: 1150,
+      isUrgent: false
     }
   ];
 

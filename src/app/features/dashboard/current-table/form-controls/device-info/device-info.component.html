@@ -1,14 +1,6 @@
 <mat-card>
-  <button
-    mat-button
-    class="remove__control__button"
-    (click)="removeFormControl()"
-    [disabled]="isRemoveControlButtonDisabled"
-  >
-    <mat-icon>clear</mat-icon>
-  </button>
   <form [formGroup]="form" autocomplete="off" novalidate>
-    <div fxLayoutAlign="space-between center" fxLayoutGap="20">
+    <div fxLayoutAlign="space-between flex-end" fxLayoutGap="20">
       <app-autocomplete
         [formControlName]="formControls.deviceType"
         [deviceTypes]="deviceTypes"
@@ -16,12 +8,33 @@
         [isRequired]="true"
         label="Device Type:"
       ></app-autocomplete>
-      <mat-form-field [style.width.px]=320>
+      <mat-form-field>
+        <mat-label>Device Brand</mat-label>
+        <input
+          type="text"
+          placeholder="Pick one"
+          matInput
+          required
+          [formControlName]="formControls.deviceBrand"
+          [matAutocomplete]="auto"
+          [errorStateMatcher]="errorState"
+        />
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let deviceBrand of autoCompleteFilteredOptions | async" [value]="deviceBrand">
+            {{deviceBrand.listItemValue}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error
+          *ngIf="form.controls[formControls.deviceBrand].hasError('required')">
+          Please, choose device brand
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field [style.width.px]=260>
         <mat-label>Device Model:</mat-label>
-        <input matInput [formControlName]="formControls.deviceModel" required>
+        <input matInput [formControlName]="formControls.deviceModel" [errorStateMatcher]="errorState" required/>
         <mat-error
           *ngIf="form.controls[formControls.deviceModel].hasError('required')">
-          Please, choose device model
+          Please, add device model
         </mat-error>
       </mat-form-field>
     </div>
@@ -31,16 +44,18 @@
         <textarea matInput [formControlName]="formControls.deviceDefectDescription" rows="5"></textarea>
       </mat-form-field>
       <mat-form-field class="form__control__textarea">
-        <mat-label>Defect State</mat-label>
+        <mat-label>Device State</mat-label>
         <textarea matInput [formControlName]="formControls.deviceStateDescription" rows="2"></textarea>
       </mat-form-field>
     </div>
-    <mat-checkbox value="after" [formControlName]="formControls.isHasPassword">Has Password</mat-checkbox>
-    <ng-container [formArrayName]="formControls.password" *ngFor="let _ of passwordFormControlArray.controls; index as passwordIndex">
-      <mat-form-field [style.width.px]=320>
-        <mat-label>Password</mat-label>
-        <input matInput [formControlName]="passwordIndex"/>
-      </mat-form-field>
-    </ng-container>
+    <div fxLayoutGap="20px">
+      <mat-checkbox value="after" [formControlName]="formControls.isHasPassword">Has Password</mat-checkbox>
+      <ng-container [formArrayName]="formControls.password" *ngFor="let _ of passwordFormControlArray.controls; index as passwordIndex">
+        <mat-form-field [style.width.px]=320>
+          <mat-label>Password</mat-label>
+          <input matInput [formControlName]="passwordIndex"/>
+        </mat-form-field>
+      </ng-container>
+    </div>
   </form>
 </mat-card>

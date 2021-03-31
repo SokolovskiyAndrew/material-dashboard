@@ -1,6 +1,6 @@
 import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DeviceTypeModel } from '../../../core/models/device-type.model';
+import { ListItemModel } from '../../../core/models/device-type.model';
 
 @Component({
   selector: 'app-device-type-autocomplete',
@@ -20,36 +20,36 @@ export class DeviceTypeAutocompleteComponent implements OnInit, ControlValueAcce
   @Input() isRequired = false;
 
   formControl: FormControl = new FormControl('');
-  deviceTypes: DeviceTypeModel[] = [
+  deviceTypes: ListItemModel[] = [
     {
-      typeId: 0,
-      typeDescription: 'Laptop',
-      typeIcon: 'laptop'
+      listItemId: 0,
+      listItemValue: 'Laptop',
+      listItemIcon: 'laptop'
     },
     {
-      typeId: 1,
-      typeDescription: 'Smartphone',
-      typeIcon: 'phone_iphone'
+      listItemId: 1,
+      listItemValue: 'Smartphone',
+      listItemIcon: 'phone_iphone'
     },
     {
-      typeId: 2,
-      typeDescription: 'Personal Computer',
-      typeIcon: 'desktop_mac'
+      listItemId: 2,
+      listItemValue: 'Personal Computer',
+      listItemIcon: 'desktop_mac'
     },
     {
-      typeId: 3,
-      typeDescription: 'Monitor',
-      typeIcon: 'desktop_windows'
+      listItemId: 3,
+      listItemValue: 'Monitor',
+      listItemIcon: 'desktop_windows'
     },
     {
-      typeId: 4,
-      typeDescription: 'Printer',
-      typeIcon: 'local_printshop'
+      listItemId: 4,
+      listItemValue: 'Printer',
+      listItemIcon: 'local_printshop'
     },
     {
-      typeId: 5,
-      typeDescription: 'Other Device',
-      typeIcon: 'devices_other'
+      listItemId: 5,
+      listItemValue: 'Other Device',
+      listItemIcon: 'devices_other'
     }
   ];
   constructor() {}

@@ -1,6 +1,6 @@
 import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DeviceTypeModel } from '@core/models/device-type.model';
+import { ListItemModel } from '@core/models/device-type.model';
 import { takeUntil } from 'rxjs/operators';
 import { Unsubscriber } from '@core/classes';
 
@@ -17,14 +17,14 @@ import { Unsubscriber } from '@core/classes';
   ]
 })
 export class AutocompleteComponent extends Unsubscriber implements OnInit, ControlValueAccessor {
-  @Input() deviceTypes: DeviceTypeModel[] = [];
+  @Input() deviceTypes: ListItemModel[] = [];
   @Input() label: string;
   @Input() isUseIcons = false;
   @Input() isDisabled = false;
   @Input() isRequired = false;
 
   autocompleteFormControl: FormControl = new FormControl();
-  currentDeviceType: DeviceTypeModel;
+  currentDeviceType: ListItemModel;
 
   constructor() {
     super();
@@ -50,7 +50,7 @@ export class AutocompleteComponent extends Unsubscriber implements OnInit, Contr
 
   subscribeForFormControlValueChanges(): void {
     this.autocompleteFormControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((controlValue) => {
-      this.currentDeviceType = this.deviceTypes.find((item) => item.typeId === controlValue);
+      this.currentDeviceType = this.deviceTypes.find((item) => item.listItemId === controlValue);
 
       this.onModelChange(controlValue);
     });

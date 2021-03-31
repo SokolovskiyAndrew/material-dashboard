@@ -5,13 +5,18 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
-  NG_VALUE_ACCESSOR
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  Validator,
+  Validators
 } from '@angular/forms';
 import { DeviceInfoFormControlsEnum } from '../../enums/device-info-form-controls.enum';
-import { DeviceTypeModel } from '@core/models/device-type.model';
-import { Unsubscriber } from '@core/classes';
-import { takeUntil } from 'rxjs/operators';
+import { ListItemModel } from '@core/models/device-type.model';
+import { CheckFormControlForError, Unsubscriber } from '@core/classes';
+import { filter, map, startWith, takeUntil } from 'rxjs/operators';
 import { DeviceInfoInterface } from '../../interfaces';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-device-info',
@@ -22,16 +27,23 @@ import { DeviceInfoInterface } from '../../interfaces';
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => DeviceInfoComponent),
       multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => DeviceInfoComponent),
+      multi: true
     }
   ]
 })
-export class DeviceInfoComponent extends Unsubscriber implements OnInit, ControlValueAccessor {
-  @Input() deviceTypes: DeviceTypeModel[] = [];
-  @Input() isRemoveControlButtonDisabled = true;
-  @Output() removeControl: EventEmitter<void> = new EventEmitter<void>();
+export class DeviceInfoComponent extends Unsubscriber implements OnInit, ControlValueAccessor, Validator {
+  @Input() deviceTypes: ListItemModel[] = [];
+  @Input() brandsList: ListItemModel[] = [];
+  @Input() errorState: CheckFormControlForError;
   form: FormGroup;
   passwordFormControlArray: FormArray;
   formControls: typeof DeviceInfoFormControlsEnum = DeviceInfoFormControlsEnum;
+  autoCompleteFilteredOptions: Observable<ListItemModel[]>;
+
   faCoffee = 'faCoffee';
 
   constructor(private fb: FormBuilder) {
@@ -50,6 +62,10 @@ export class DeviceInfoComponent extends Unsubscriber implements OnInit, Control
 
   registerOnTouched(fn: any): void {}
 
+  validate(): ValidationErrors | null {
+    return this.form.invalid ? { required: true } : null;
+  }
+
   writeValue(deviceInfoCustomFormControlValue: DeviceInfoInterface): void {
     if (deviceInfoCustomFormControlValue) {
       this.form.patchValue(deviceInfoCustomFormControlValue, { emitEvent: false });
@@ -58,22 +74,25 @@ export class DeviceInfoComponent extends Unsubscriber implements OnInit, Control
 
   initForm(): void {
     this.form = this.fb.group({
-      [DeviceInfoFormControlsEnum.deviceType]: new FormControl(null),
-      [DeviceInfoFormControlsEnum.deviceModel]: new FormControl(null),
+      [DeviceInfoFormControlsEnum.deviceType]: new FormControl(null, [Validators.required]),
+      [DeviceInfoFormControlsEnum.deviceBrand]: new FormControl(null, [Validators.required]),
+      [DeviceInfoFormControlsEnum.deviceModel]: new FormControl(null, [Validators.required]),
       [DeviceInfoFormControlsEnum.deviceStateDescription]: new FormControl(null),
       [DeviceInfoFormControlsEnum.deviceDefectDescription]: new FormControl(null),
-      [DeviceInfoFormControlsEnum.isHasPassword]: new FormControl(true),
+      [DeviceInfoFormControlsEnum.isHasPassword]: new FormControl(false),
       [DeviceInfoFormControlsEnum.password]: new FormArray([])
     });
 
     this.passwordFormControlArray = this.form.get(this.formControls.password) as FormArray;
 
     this.subscribeForFormChanges();
+    this.subscribeForAutoCompleteValueChanges();
     this.subscribeForIfShowPasswordControl();
   }
 
   subscribeForFormChanges(): void {
     this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+      // console.log(value);
       this.onModelChange(this.form.getRawValue());
     });
   }
@@ -83,26 +102,31 @@ export class DeviceInfoComponent extends Unsubscriber implements OnInit, Control
       .get(this.formControls.isHasPassword)
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((isShowPasswordInput) => {
-        console.log(this.passwordFormControlArray.value.length);
         this.renderPasswordInput(isShowPasswordInput);
       });
   }
 
-  renderPasswordInput(isShowPasswordInput: boolean): void {
-    // if (isShowPasswordInput) {
-    //   this.passwordFormControlArray.push(new FormControl(''));
-    // } else {
-    //   if (this.passwordFormControlArray.value.length !== 0) {
-    //     this.passwordFormControlArray.clear();
-    //   }
-    // }
+  subscribeForAutoCompleteValueChanges(): void {
+    this.autoCompleteFilteredOptions = this.form.get(this.formControls.deviceBrand).valueChanges.pipe(
+      map((value) => (typeof value === 'string' ? value : value.listItemValue)),
+      map((value) => (value ? this.filterAutoCompleteOptions(value) : this.brandsList.slice()))
+    );
+  }
 
+  renderPasswordInput(isShowPasswordInput: boolean): void {
     isShowPasswordInput
       ? this.passwordFormControlArray.push(new FormControl(''))
       : this.passwordFormControlArray.clear();
   }
 
-  removeFormControl(): void {
-    this.removeControl.emit();
+  displayFn(deviceBrand: ListItemModel): string {
+    return deviceBrand && deviceBrand.listItemValue ? deviceBrand.listItemValue : '';
+  }
+
+  private filterAutoCompleteOptions(optionValue: string): ListItemModel[] {
+    // console.log(optionValue);
+    const filterValue = optionValue.toLowerCase();
+
+    return this.brandsList.filter((option) => option.listItemValue.toLowerCase().indexOf(filterValue) === 0);
   }
 }

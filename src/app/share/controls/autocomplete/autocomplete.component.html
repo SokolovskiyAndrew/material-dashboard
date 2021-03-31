@@ -5,20 +5,20 @@
     [required]="isRequired">
     <mat-select-trigger fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
       <div *ngIf="isUseIcons">
-        <mat-icon>{{currentDeviceType.typeIcon}}</mat-icon>
+        <mat-icon>{{currentDeviceType.listItemIcon}}</mat-icon>
       </div>
       <div>
-        <span>{{currentDeviceType.typeDescription}}</span>
+        <span>{{currentDeviceType.listItemValue}}</span>
       </div>
     </mat-select-trigger>
     <mat-option
       *ngFor="let deviceType of deviceTypes"
-      [value]="deviceType?.typeId">
+      [value]="deviceType?.listItemId">
       <mat-icon *ngIf="isUseIcons">
-        {{deviceType?.typeIcon}}
+        {{deviceType?.listItemIcon}}
       </mat-icon>
       <span>
-        {{deviceType?.typeDescription}}
+        {{deviceType?.listItemValue}}
       </span>
     </mat-option>
   </mat-select>

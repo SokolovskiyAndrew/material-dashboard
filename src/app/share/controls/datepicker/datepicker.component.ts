@@ -47,9 +47,7 @@ export class DatepickerComponent extends Unsubscriber implements OnInit, Control
     super();
   }
 
-  ngOnInit(): void {
-    console.log(moment().day());
-  }
+  ngOnInit(): void {}
 
   onModelChange: (_: any) => void = () => {};
 
@@ -67,7 +65,6 @@ export class DatepickerComponent extends Unsubscriber implements OnInit, Control
 
   subscribeForFormControlValueChanges(): void {
     this.formControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((controlValue) => {
-      console.log(controlValue.format('MMM Do YY'));
       this.onModelChange(controlValue);
     });
   }
