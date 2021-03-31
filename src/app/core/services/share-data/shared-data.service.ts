@@ -1,90 +1,130 @@
 import { Injectable } from '@angular/core';
-import { DeviceTypeModel } from '@core/models/device-type.model';
+import { ListItemModel } from '@core/models/device-type.model';
 import { WorkerInterface } from '../../../features/dashboard/current-table/interfaces';
 
 @Injectable()
 export class SharedDataService {
-  readonly deviceTypeItems: DeviceTypeModel[] = [
+  readonly deviceTypeItems: ListItemModel[] = [
     {
-      typeId: 0,
-      typeDescription: 'Laptop',
-      typeIcon: 'laptop'
+      listItemId: 0,
+      listItemValue: 'Laptop',
+      listItemIcon: 'laptop'
     },
     {
-      typeId: 1,
-      typeDescription: 'Smartphone',
-      typeIcon: 'phone_iphone'
+      listItemId: 1,
+      listItemValue: 'Smartphone',
+      listItemIcon: 'phone_iphone'
     },
     {
-      typeId: 2,
-      typeDescription: 'Personal Computer',
-      typeIcon: 'desktop_mac'
+      listItemId: 2,
+      listItemValue: 'Personal Computer',
+      listItemIcon: 'desktop_mac'
     },
     {
-      typeId: 3,
-      typeDescription: 'Monitor',
-      typeIcon: 'desktop_windows'
+      listItemId: 3,
+      listItemValue: 'Monitor',
+      listItemIcon: 'desktop_windows'
     },
     {
-      typeId: 4,
-      typeDescription: 'Printer',
-      typeIcon: 'local_printshop'
+      listItemId: 4,
+      listItemValue: 'Printer',
+      listItemIcon: 'local_printshop'
     },
     {
-      typeId: 5,
-      typeDescription: 'Other Device',
-      typeIcon: 'devices_other'
+      listItemId: 5,
+      listItemValue: 'Other Device',
+      listItemIcon: 'devices_other'
     }
   ];
 
-  readonly orderStatusItems: DeviceTypeModel[] = [
+  readonly orderStatusItems: ListItemModel[] = [
     {
-      typeId: 0,
-      typeDescription: 'New',
-      typeIcon: 'fiber_new'
+      listItemId: 0,
+      listItemValue: 'New',
+      listItemIcon: 'fiber_new'
     },
     {
-      typeId: 1,
-      typeDescription: 'In Progress',
-      typeIcon: 'play_circle_outline'
+      listItemId: 1,
+      listItemValue: 'In Progress',
+      listItemIcon: 'play_circle_outline'
     },
     {
-      typeId: 2,
-      typeDescription: 'Blocked',
-      typeIcon: 'pause_circle_outline'
+      listItemId: 2,
+      listItemValue: 'Blocked',
+      listItemIcon: 'pause_circle_outline'
     },
     {
-      typeId: 3,
-      typeDescription: 'Completed',
-      typeIcon: 'check_circle_outline'
+      listItemId: 3,
+      listItemValue: 'Completed',
+      listItemIcon: 'check_circle_outline'
     }
   ];
 
-  readonly workers: DeviceTypeModel[] = [
+  readonly workers: ListItemModel[] = [
     {
-      typeId: 0,
-      typeDescription: 'Alex'
+      listItemId: 0,
+      listItemValue: 'Alex'
     },
     {
-      typeId: 1,
-      typeDescription: 'Chris'
+      listItemId: 1,
+      listItemValue: 'Chris'
     },
     {
-      typeId: 2,
-      typeDescription: 'Elly'
+      listItemId: 2,
+      listItemValue: 'Elly'
     }
   ];
+
+  readonly brands: ListItemModel[] = [
+    {
+      listItemId: 0,
+      listItemValue: 'Hewlett Packard(HP)'
+    },
+    {
+      listItemId: 1,
+      listItemValue: 'Acer'
+    },
+    {
+      listItemId: 2,
+      listItemValue: 'Asus'
+    },
+    {
+      listItemId: 3,
+      listItemValue: 'Samsung'
+    },
+    {
+      listItemId: 4,
+      listItemValue: 'Dell'
+    },
+    {
+      listItemId: 5,
+      listItemValue: 'Huawei'
+    },
+    {
+      listItemId: 6,
+      listItemValue: 'Xiaomi'
+    },
+    {
+      listItemId: 7,
+      listItemValue: 'Apple'
+    }
+  ];
+
   constructor() {}
 
-  get deviceTypeItemList(): DeviceTypeModel[] {
+  get deviceTypeItemList(): ListItemModel[] {
     return this.deviceTypeItems;
   }
 
-  get orderStatusItemList(): DeviceTypeModel[] {
+  get orderStatusItemList(): ListItemModel[] {
     return this.orderStatusItems;
   }
 
-  get workersList(): DeviceTypeModel[] {
+  get workersList(): ListItemModel[] {
     return this.workers;
+  }
+
+  get brandList(): ListItemModel[] {
+    return this.brands;
   }
 }

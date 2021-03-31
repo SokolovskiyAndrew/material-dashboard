@@ -28,13 +28,21 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DatepickerModule } from '@share/controls';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { OrderStatusIconColorDirective } from './current-table/directives/order-status-icon-color.directive';
+import { ShareModalsModule } from '@share/modals/share-modals.module';
+import { MatMenuModule } from '@angular/material/menu';
 
 const maskConfig: Partial<IConfig> = {
   validation: true
 };
 
 @NgModule({
-  declarations: [CurrentTableComponent, NewOrderModalComponent, DeviceInfoComponent],
+  declarations: [
+    CurrentTableComponent,
+    NewOrderModalComponent,
+    DeviceInfoComponent,
+    OrderStatusIconColorDirective
+  ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
@@ -58,9 +66,11 @@ const maskConfig: Partial<IConfig> = {
     DeviceTypeAutocompleteModule,
     MatSelectModule,
     MatStepperModule,
+    MatMenuModule,
     FontAwesomeModule,
     AutocompleteModule,
     DatepickerModule,
+    ShareModalsModule,
     NgxMaskModule.forRoot(maskConfig)
   ]
 })

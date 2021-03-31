@@ -1,6 +1,6 @@
-export class DeviceTypeModel {
-  typeId: number;
-  typeDescription: string;
-  typeIcon?: string;
-  typeImg?: string;
+export class ListItemModel {
+  listItemId: number;
+  listItemValue: string;
+  listItemIcon?: string;
+  listItemImg?: string;
 }

@@ -5,7 +5,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OrderDataService } from '../../services';
 import { NewOrderModalComponent } from '../../modals';
-import { OrderInterface } from '../../interfaces';
+import { DeviceInfoInterface, OrderInterface } from '../../interfaces';
+import { ListItemModel } from '@core/models/device-type.model';
+import { SharedDataService } from '@core/services';
+import * as moment from 'moment';
+import { ShareModalsProviderService } from '@share/modals/share-modals-provider/share-modals-provider.service';
 
 @Component({
   selector: 'app-current-table',
@@ -18,10 +22,10 @@ export class CurrentTableComponent implements OnInit, AfterViewInit {
     'status',
     'receivedDate',
     'deliveryDate',
-    'phoneNumber',
-    'workerName',
-    'laptopModel',
-    'laptopDefect',
+    'customerInfo',
+    'deviceInfo',
+    'defect',
+    'assignedWorker',
     'servicePrice',
     'actionButtons'
   ];
@@ -29,17 +33,27 @@ export class CurrentTableComponent implements OnInit, AfterViewInit {
   data: MatTableDataSource<OrderInterface>;
   ordersData: OrderInterface[] = [];
   expandedElement: any;
+  orderStatusItems: ListItemModel[] = [];
+  workersList: ListItemModel[] = [];
+  deviceTypes: ListItemModel[] = [];
+  brandsList: ListItemModel[] = [];
   @ViewChild(MatTable) matTable: MatTable<OrderInterface>;
   @ViewChild(MatSort) matSort: MatSort;
 
   constructor(
     private dialogRef: MatDialog,
     private matSnackBar: MatSnackBar,
-    private orderDataService: OrderDataService
+    private orderDataService: OrderDataService,
+    private sharedDataService: SharedDataService,
+    private shareModalProvider: ShareModalsProviderService
   ) {}
 
   ngOnInit(): void {
-    // console.log(this.data);
+    this.orderStatusItems = this.sharedDataService.orderStatusItemList;
+    this.workersList = this.sharedDataService.workersList;
+    this.deviceTypes = this.sharedDataService.deviceTypeItemList;
+    this.brandsList = this.sharedDataService.brandList;
+
     this.getAllOrders();
   }
 
@@ -50,7 +64,8 @@ export class CurrentTableComponent implements OnInit, AfterViewInit {
   getAllOrders(): void {
     this.orderDataService.orderDataChanges$.subscribe((orders) => {
       this.ordersData = orders;
-      this.data = new MatTableDataSource<OrderInterface>(orders);
+
+      this.data = new MatTableDataSource<OrderInterface>(this.convertDtoDataToGridTemplate(orders));
     });
   }
 
@@ -88,40 +103,63 @@ export class CurrentTableComponent implements OnInit, AfterViewInit {
     console.log(rowId);
   }
 
-  deleteRow(): void {
-    const newOrder: OrderInterface = {
-      id: 156,
-      status: 'pause_circle_outline',
-      receivedDate: '01/02/2020',
-      deliveryDate: '',
-      customer: {
-        customerName: 'John Snow',
-        phoneNumber: '0952456454',
-        isViberPresent: true
-      },
-      assignedWorker: {
-        workerName: 'Ivan',
-        workerPhoto: ''
-      },
-      laptopModel: 'Acer Aspire G1-531',
-      laptopDefect: 'Broken Display',
-      servicePrice: 1450
-    };
-
-    this.orderDataService.orderDataAction$.next([newOrder, ...this.orderDataService.ordersData]);
-    // this.matTable.renderRows();
+  deleteRow(orderId: number): void {
+    this.shareModalProvider
+      .openConfirmModal({
+        confirmTitle: 'Delete order',
+        confirmDescription: 'You are about to delete order! Are you sure?'
+      })
+      .subscribe((isDelete) => {
+        if (isDelete) {
+          const newArr = this.orderDataService.ordersData.filter((item) => item.id !== orderId);
+          this.orderDataService.orderDataAction$.next([...newArr]);
+        }
+      });
   }
 
   openDialogModal(): void {
     const dialogRef = this.dialogRef.open(NewOrderModalComponent, {
       width: '1200px',
       maxHeight: '700px',
-      hasBackdrop: true
+      hasBackdrop: true,
+      data: {
+        orderStatusItems: this.orderStatusItems,
+        workersList: this.workersList,
+        deviceTypes: this.deviceTypes,
+        brandsList: this.brandsList
+      }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.showSnackBar();
+        console.log(result);
+        this.orderDataService.orderDataAction$.next([
+          {
+            id: 2,
+            assignedWorker: result.assignedWorker,
+            status: result.orderState,
+            deliveryDate: result.endDate,
+            receivedDate: result.startDate,
+            customerInfo: {
+              customerName: result.customerName,
+              phoneNumber: result.customerPhoneNumber,
+              isViberPresent: result.isCustomerHasViber
+            },
+            deviceInfo: {
+              deviceType: result.deviceInfo.deviceType,
+              deviceBrandId: result.deviceInfo.deviceBrand.listItemId,
+              deviceModel: result.deviceInfo.deviceModel,
+              deviceStateDescription: result.deviceInfo.deviceStateDescription,
+              deviceDefectDescription: result.deviceInfo.deviceDefectDescription,
+              isHasPassword: result.deviceInfo.isHasPassword,
+              password: result.deviceInfo.password
+            },
+            isUrgent: result.isOrderUrgent,
+            servicePrice: null
+          },
+          ...this.orderDataService.ordersData
+        ]);
       }
     });
   }
@@ -133,5 +171,42 @@ export class CurrentTableComponent implements OnInit, AfterViewInit {
       horizontalPosition: 'right',
       verticalPosition: 'top'
     });
+  }
+
+  private convertDtoDataToGridTemplate(dtoData: OrderInterface[]): any {
+    return dtoData.map((order) => {
+      return {
+        ...order,
+        receivedDate: this.dateFormatter(order.receivedDate),
+        deliveryDate: this.dateFormatter(order.deliveryDate),
+        status: this.findCurrentItemByProvidedId(order.status, this.orderStatusItems),
+        assignedWorker: this.findCurrentItemByProvidedId(order.assignedWorker, this.workersList),
+        deviceInfo: {
+          ...order.deviceInfo,
+          deviceName: this.convertDeviceName(
+            this.findCurrentItemByProvidedId(order.deviceInfo.deviceBrandId, this.brandsList).listItemValue,
+            order.deviceInfo.deviceModel
+          )
+        }
+      };
+    });
+  }
+
+  private dateFormatter(date: string): string {
+    if (date) {
+      return moment(date).format('DD/MM/YYYY');
+    }
+  }
+
+  private convertDeviceName(deviceBrand: string, deviceModel): string {
+    return `${deviceBrand} ${deviceModel}`;
+  }
+
+  private findCurrentItemByProvidedId(id: number, itemsList: ListItemModel[]): ListItemModel {
+    if (id || id === 0) {
+      return itemsList.find((worker) => worker.listItemId === id);
+    } else {
+      return null;
+    }
   }
 }

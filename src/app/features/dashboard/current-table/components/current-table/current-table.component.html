@@ -1,77 +1,104 @@
-
 <div *ngIf="data">
   <div fxLayout="row" fxLayoutAlign="space-between">
     <mat-form-field>
       <mat-label>Filter</mat-label>
       <input matInput (keyup)="applyFilter($event)">
     </mat-form-field>
-    <button mat-icon-button (click)="openDialogModal()">
-      <mat-icon>add_box</mat-icon>
+    <button mat-button  (click)="openDialogModal()">
+      <mat-icon>add</mat-icon>
+      <span>New order</span>
     </button>
   </div>
 
   <table mat-table [dataSource]="data" class="mat-elevation-z8" matSort>
     <ng-container matColumnDef="no">
-      <th mat-header-cell *matHeaderCellDef> No. </th>
-      <td mat-cell *matCellDef="let element; let i = index"> {{i + 1}} </td>
+      <th mat-header-cell *matHeaderCellDef>No.</th>
+      <td mat-cell *matCellDef="let element; let i = index">
+      <div class="order-id-cell">
+        <span>{{i + 1}}</span>
+        <mat-icon color="warn" *ngIf="element.isUrgent">flash_on</mat-icon>
+      </div>
+      </td>
     </ng-container>
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef> Status </th>
       <td mat-cell *matCellDef="let element">
-        <mat-icon
-          aria-label="Example home icon"
-          matTooltip="Waiting for laptop parts and customer approval"
-          matTooltipPosition="above"
-        >
-          {{element.status}}
-        </mat-icon>
+        <div fxLayoutAlign="flex-start center">
+          <mat-icon
+            appOrderStatusIconColor
+            [statusIconId]="element.status.listItemId"
+            aria-label="Example home icon"
+            matTooltip="Waiting for laptop parts and customer approval"
+            matTooltipPosition="above"
+          >
+            {{element.status.listItemIcon}}
+          </mat-icon>
+        </div>
       </td>
     </ng-container>
     <ng-container matColumnDef="receivedDate">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Received Date </th>
       <td mat-cell *matCellDef="let element"> {{element.receivedDate}}
-        <!--        <mat-form-field color="accent" appearance="fill" class="example-form-field">-->
-        <!--          <mat-label>Choose a date</mat-label>-->
-        <!--          <input matInput [matDatepicker]="datepicker">-->
-        <!--          <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>-->
-        <!--          <mat-datepicker #datepicker>-->
-        <!--          </mat-datepicker>-->
-        <!--        </mat-form-field>-->
       </td>
     </ng-container>
     <ng-container matColumnDef="deliveryDate">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Delivery Date </th>
       <td mat-cell *matCellDef="let element"> {{element.deliveryDate}} </td>
     </ng-container>
-    <ng-container matColumnDef="phoneNumber">
-      <th mat-header-cell *matHeaderCellDef> Phone Number </th>
-      <td mat-cell *matCellDef="let element"> {{element.customer.phoneNumber}} </td>
+    <ng-container matColumnDef="customerInfo">
+      <th mat-header-cell *matHeaderCellDef> Customer Info </th>
+      <td mat-cell *matCellDef="let element">
+        <b>{{element.customerInfo.customerName}}</b>
+        <br/>
+        <small>{{element.customerInfo.phoneNumber}}</small>
+      </td>
     </ng-container>
-    <ng-container matColumnDef="workerName">
+    <ng-container matColumnDef="assignedWorker">
       <th mat-header-cell *matHeaderCellDef> Assigned Worker </th>
-      <td mat-cell *matCellDef="let element"> {{element.assignedWorker.workerName}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.assignedWorker?.listItemValue}} </td>
     </ng-container>
-    <ng-container matColumnDef="laptopModel">
-      <th mat-header-cell *matHeaderCellDef> Laptop Model </th>
-      <td mat-cell *matCellDef="let element"> {{element.laptopModel}} </td>
+    <ng-container matColumnDef="deviceInfo">
+      <th mat-header-cell *matHeaderCellDef> Device Info</th>
+      <td mat-cell *matCellDef="let element"> {{element.deviceInfo.deviceName}} </td>
     </ng-container>
-    <ng-container matColumnDef="laptopDefect">
-      <th mat-header-cell *matHeaderCellDef> Laptop Defect </th>
-      <td mat-cell *matCellDef="let element"> {{element.laptopDefect}} </td>
+    <ng-container matColumnDef="defect">
+      <th mat-header-cell *matHeaderCellDef>Defect</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.deviceInfo.deviceDefectDescription}}
+      </td>
     </ng-container>
+<!--    <ng-container matColumnDef="laptopDefect">-->
+<!--      <th mat-header-cell *matHeaderCellDef> Laptop Defect </th>-->
+<!--      <td mat-cell *matCellDef="let element"> {{element.laptopDefect}} </td>-->
+<!--    </ng-container>-->
     <ng-container matColumnDef="servicePrice">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Service Price </th>
       <td mat-cell *matCellDef="let element"> {{element.servicePrice}} </td>
     </ng-container>
     <ng-container matColumnDef="actionButtons">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Service Price </th>
-      <td mat-cell *matCellDef="let element">
-        <a (click)="editRowState(element.id)">
-          <mat-icon color="accent">edit</mat-icon>
-        </a>
-        <a (click)="deleteRow()">
-          <mat-icon color="warn">close</mat-icon>
-        </a>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+      <td mat-cell *matCellDef="let element" class="action-buttons">
+        <button class="additional-options-button" mat-icon-button [matMenuTriggerFor]="additionalOptions">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #additionalOptions="matMenu">
+          <button mat-menu-item (click)="editRowState(element.id)">
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item (click)="deleteRow(element.id)">
+            <mat-icon>close</mat-icon>
+            <span>Delete</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>check_circle_outline</mat-icon>
+            <span>Complete</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>download</mat-icon>
+            <span>Download</span>
+          </button>
+        </mat-menu>
       </td>
     </ng-container>
     <!--    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">-->

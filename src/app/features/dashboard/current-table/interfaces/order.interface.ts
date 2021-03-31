@@ -1,14 +1,14 @@
 import { CustomerInterface } from './customer.interface';
-import { WorkerInterface } from './worker.interface';
+import { DeviceInfoInterface } from './device-info.interface';
 
 export interface OrderInterface {
   id: number;
-  status?: string;
+  status: number;
   receivedDate: string;
   deliveryDate?: string;
-  customer: CustomerInterface;
-  assignedWorker?: WorkerInterface;
-  laptopModel: string;
-  laptopDefect: string;
+  customerInfo: CustomerInterface;
+  assignedWorker?: number;
+  deviceInfo: DeviceInfoInterface;
   servicePrice: number;
+  isUrgent?: boolean;
 }

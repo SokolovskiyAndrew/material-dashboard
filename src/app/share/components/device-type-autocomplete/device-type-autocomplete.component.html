@@ -8,7 +8,7 @@
   >
   <mat-autocomplete #auto="matAutocomplete">
     <mat-option  *ngFor="let deviceType of deviceTypes" [value]="deviceType">
-      <mat-icon>{{deviceType.typeIcon}}</mat-icon>{{deviceType.typeDescription}}
+      <mat-icon>{{deviceType.listItemIcon}}</mat-icon>{{deviceType.listItemValue}}
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>

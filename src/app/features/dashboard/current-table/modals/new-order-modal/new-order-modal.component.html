@@ -112,12 +112,12 @@
           </mat-form-field>
           <mat-form-field>
             <mat-label>Phone Number:</mat-label>
-            <span matPrefix>+380&nbsp;</span>
+            <span matPrefix>+38&nbsp;</span>
             <input
               type="tel"
               matInput
               required
-              mask="(00) 000-0000" placeholder="Ex. (00) 000-0000"
+              mask="(000) 000-0000" placeholder="Ex. (000) 000-0000"
               [formControlName]="formControls.customerPhoneNumber"
               [errorStateMatcher]="errorStateMatcher"
             >
@@ -183,25 +183,13 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
 
-        <div fxLayoutAlign="end">
-          <button mat-icon-button (click)="addDeviceInfoFormControl()">
-            <mat-icon>add_box</mat-icon>
-          </button>
-        </div>
-
-        <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="12px">
-<!--          <ng-container [formArrayName]="formControls.deviceInfo" *ngFor="let _ of deviceInfoFormArray.controls; index as deviceInfoIndex">-->
-<!--            <div >-->
-<!--            </div>-->
-<!--          </ng-container>-->
-          <ng-container [formArrayName]="formControls.deviceInfo" *ngFor="let _ of deviceInfoFormArray.controls; index as deviceInfoIndex">
-            <app-device-info
-              [formControlName]="deviceInfoIndex"
-              [deviceTypes]="deviceTypes"
-              [isRemoveControlButtonDisabled]="deviceInfoIndex === 0"
-              (removeControl)="removeDeviceInfoControl(deviceInfoIndex)"
-            ></app-device-info>
-          </ng-container>
+        <div fxLayoutAlign="center">
+          <app-device-info
+            [formControlName]="formControls.deviceInfo"
+            [deviceTypes]="deviceTypes"
+            [brandsList]="brandsList"
+            [errorState]="errorStateMatcher"
+          ></app-device-info>
         </div>
 
         <mat-action-row>
@@ -220,7 +208,7 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
 
-        <div fxLayoutAlign="space-between center">
+        <div fxLayoutAlign="space-between flex-end">
           <app-autocomplete
             [deviceTypes]="orderStatusItems"
             label="Order Status"
